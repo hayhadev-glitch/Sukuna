@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR" manifest="cache.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#030303">
+<title>SUKUNA HOST • Domain Expansion</title>
+<style>
+  :root {
+    --bg: #030303;
+    --red: #dc0000;
+    --red-bright: #ff1a1a;
+    --red-dark: #7a0000;
+    --red-glow: rgba(220, 0, 0, 0.6);
+    --text: #f0f0f0;
+    --muted: #777;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--red); color: #000; }
+
+  /* ===== CENÁRIO — MALEVOLENT SHRINE ===== */
+  .bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -4;
+    background: #020202 url("bg.jpg") center/cover no-repeat;
+    animation: bgDrift 45s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes bgDrift {
+    0%   { transform: scale(1) translateY(0); }
+    100% { transform: scale(1.07) translateY(-1.5vh); }
+  }
+
+  .shade {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -3;
+    pointer-events: none;
+    background:
+      linear-gradient(to bottom,
+        rgba(0,0,0,.85) 0%, rgba(0,0,0,.45) 20%,
+        rgba(0,0,0,.28) 48%, rgba(0,0,0,.55) 76%, rgba(2,0,0,.94) 100%),
+      radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,.6) 100%);
+  }
+
+  .cursed {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 100%, rgba(255,20,20,.25) 0%, transparent 55%);
+    animation: cursePulse 3.4s ease-in-out infinite;
+  }
+  @keyframes cursePulse {
+    0%, 100% { opacity: .35; }
+    50%      { opacity: 1; }
+  }
+
+  /* ===== BRASAS ===== */
+  .embers {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .embers i {
+    position: absolute;
+    bottom: -12px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #ff2020;
+    box-shadow: 0 0 8px 3px rgba(255,30,30,.55);
+    opacity: 0;
+    animation: rise linear infinite;
+  }
+  .embers i:nth-child(1)  { left:  4%; animation-duration: 12s;   animation-delay: 0s; }
+  .embers i:nth-child(2)  { left: 12%; animation-duration: 16s;   animation-delay: 4s;   width: 3px; height: 3px; }
+  .embers i:nth-child(3)  { left: 21%; animation-duration: 10s;   animation-delay: 2s; }
+  .embers i:nth-child(4)  { left: 30%; animation-duration: 14s;   animation-delay: 6s;   width: 3px; height: 3px; }
+  .embers i:nth-child(5)  { left: 39%; animation-duration:  9s;   animation-delay: 1s; }
+  .embers i:nth-child(6)  { left: 48%; animation-duration: 15s;   animation-delay: 8s;   width: 3px; height: 3px; }
+  .embers i:nth-child(7)  { left: 57%; animation-duration: 11s;   animation-delay: 3s; }
+  .embers i:nth-child(8)  { left: 66%; animation-duration: 13s;   animation-delay: 5s;   width: 3px; height: 3px; }
+  .embers i:nth-child(9)  { left: 76%; animation-duration: 10s;   animation-delay: 7s; }
+  .embers i:nth-child(10) { left: 87%; animation-duration: 12.5s; animation-delay: 2.5s; width: 3px; height: 3px; }
+  @keyframes rise {
+    0%   { transform: translate(0,0) scale(1); opacity: 0; }
+    8%   { opacity: .85; }
+    60%  { transform: translate(3vw,-60vh) scale(.9); opacity: .5; }
+    100% { transform: translate(-2vw,-104vh) scale(.55); opacity: 0; }
+  }
+
+  /* ===== KANJI LATERAIS ===== */
+  .kanji {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+    pointer-events: none;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.35rem;
+    line-height: 2.1;
+    color: rgba(255, 45, 45, .18);
+    text-shadow: 0 0 14px rgba(220, 0, 0, .4);
+  }
+  .kanji.l { left: 1.6vw; }
+  .kanji.r { right: 1.6vw; }
+
+  /* ===== CORTES (解) ===== */
+  .slash {
+    position: fixed;
+    top: -22%;
+    width: 2px;
+    height: 145%;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      transparent 8%, rgba(255,40,40,.5) 42%,
+      rgba(255,80,80,.95) 50%, rgba(255,40,40,.5) 58%, transparent 92%);
+    box-shadow: 0 0 14px rgba(255,30,30,.45);
+    transform: rotate(22deg);
+    opacity: .35;
+    animation: slashFlicker 6s infinite;
+  }
+  .slash.s1 { left: 71%; }
+  .slash.s2 { left: 75%; height: 130%; top: -14%; opacity: .25; animation-delay: 2.2s; }
+  @keyframes slashFlicker {
+    0%, 100% { opacity: .12; }
+    47%      { opacity: .4; }
+    50%      { opacity: .85; }
+    53%      { opacity: .3; }
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: relative;
+    text-align: center;
+    padding: 2.4rem 1rem 1.7rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,.78), rgba(0,0,0,.25) 80%, transparent);
+    border-bottom: 1px solid rgba(220, 0, 0, .25);
+    box-shadow: 0 10px 40px rgba(0,0,0,.55);
+  }
+
+  .seal {
+    position: relative;
+    display: inline-block;
+    margin-bottom: .9rem;
+  }
+  .seal::before {
+    content: "";
+    position: absolute;
+    top: -12px; left: -12px; right: -12px; bottom: -12px;
+    border: 1px dashed rgba(220, 0, 0, .5);
+    border-radius: 50%;
+    animation: spin 30s linear infinite;
+  }
+  .logo {
+    width: 118px;
+    height: 118px;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+    background: #000;
+    border: 2px solid rgba(220, 0, 0, .65);
+    box-shadow: 0 0 18px rgba(220,0,0,.6), 0 0 46px rgba(220,0,0,.35);
+    animation: pulse 3.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px var(--red-glow)); transform: scale(1); }
+    50%      { filter: drop-shadow(0 0 18px rgba(255,30,30,.85)); transform: scale(1.04); }
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  h1 {
+    font-size: 2.3rem;
+    font-weight: 900;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 12px rgba(220,0,0,.8),
+      0 0 34px rgba(220,0,0,.45),
+      0 2px 0 #000;
+  }
+  @supports (font-size: clamp(1px, 5vw, 2px)) {
+    h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); }
+  }
+
+  h1 span {
+    color: var(--red-bright);
+    text-shadow: 0 0 14px var(--red-glow), 0 0 40px rgba(255,30,30,.5);
+    animation: flicker 4.5s linear infinite;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    91%      { opacity: 1; }
+    92%      { opacity: .35; }
+    93%      { opacity: 1; }
+    96%      { opacity: .55; }
+    97%      { opacity: 1; }
+  }
+
+  .tagline {
+    margin-top: .5rem;
+    font-size: .72rem;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+  }
+
+  .curse {
+    display: inline-block;
+    margin-top: .85rem;
+    padding: .32rem .75rem;
+    font-size: .72rem;
+    letter-spacing: .5em;
+    text-indent: .5em;
+    color: #ff3b3b;
+    background: rgba(50, 0, 0, .45);
+    border: 1px solid rgba(220, 0, 0, .45);
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(220,0,0,.3), inset 0 0 10px rgba(220,0,0,.15);
+    text-shadow: 0 0 8px rgba(255,40,40,.6);
+  }
+
+  /* ===== STATUS ===== */
+  #wrap {
+    position: relative;
+    max-width: 540px;
+    margin: 2.2rem auto 0;
+    padding: 0 1.2rem 3rem;
+    text-align: center;
+  }
+
+  .panel {
+    position: relative;
+    background: rgba(6, 2, 2, .78);
+    border: 1px solid rgba(220, 0, 0, .3);
+    border-radius: 14px;
+    padding: 1.9rem 1.4rem 1.7rem;
+    box-shadow:
+      0 0 26px rgba(220, 0, 0, .14),
+      inset 0 0 46px rgba(70, 0, 0, .28);
+  }
+  /* cantos do selo */
+  .panel::before, .panel::after {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    pointer-events: none;
+  }
+  .panel::before {
+    top: -2px; left: -2px;
+    border-top: 2px solid var(--red-bright);
+    border-left: 2px solid var(--red-bright);
+    border-top-left-radius: 14px;
+    filter: drop-shadow(0 0 6px rgba(255,40,40,.8));
+  }
+  .panel::after {
+    bottom: -2px; right: -2px;
+    border-bottom: 2px solid var(--red-bright);
+    border-right: 2px solid var(--red-bright);
+    border-bottom-right-radius: 14px;
+    filter: drop-shadow(0 0 6px rgba(255,40,40,.8));
+  }
+
+  #state {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    margin-bottom: .6rem;
+    min-height: 1.6em;
+    text-shadow: 0 0 12px rgba(220,0,0,.5);
+  }
+  #state.warn { color: #ffaa44; text-shadow: 0 0 12px rgba(255,170,68,.5); }
+  #state.ok   { color: #7fd0a0; text-shadow: 0 0 12px rgba(127,208,160,.45); }
+  #state.bad  {
+    color: #ff5555;
+    text-shadow: 0 0 14px rgba(255,60,60,.6);
+    animation: flicker 2.2s linear infinite;
+  }
+
+  #det {
+    font-size: .92rem;
+    color: #b5b5b5;
+    margin-bottom: .4rem;
+  }
+  #det b {
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(255,255,255,.25);
+  }
+
+  #cache {
+    font-size: .8rem;
+    color: #777;
+    min-height: 1.2em;
+    margin-bottom: .4rem;
+    letter-spacing: .05em;
+  }
+  #cache.cacheok {
+    color: #7fd0a0;
+    text-shadow: 0 0 10px rgba(127,208,160,.4);
+  }
+
+  .ok   { color: #7fd0a0; }
+  .bad  { color: #ff5555; }
+  .warn { color: #ffaa44; }
+
+  .gem {
+    width: 9px;
+    height: 9px;
+    margin: 1.6rem auto 0;
+    background: var(--red-bright);
+    transform: rotate(45deg);
+    box-shadow: 0 0 12px rgba(255,30,30,.8), 0 0 30px rgba(220,0,0,.4);
+    animation: gemPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes gemPulse {
+    0%, 100% { opacity: .5; transform: rotate(45deg) scale(1); }
+    50%      { opacity: 1;  transform: rotate(45deg) scale(1.15); }
+  }
+
+  .hint {
+    margin-top: 1.3rem;
+    font-size: .78rem;
+    color: #8a8a8a;
+    letter-spacing: .08em;
+  }
+  .xbtn {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    line-height: 19px;
+    border: 1.5px solid rgba(255, 70, 70, .85);
+    border-radius: 50%;
+    color: #ff6a6a;
+    font-size: .68rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 .25rem;
+    vertical-align: -4px;
+    box-shadow: 0 0 10px rgba(255,30,30,.45);
+    animation: xPulse 1.7s ease-in-out infinite;
+  }
+  @keyframes xPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(255,30,30,.3); transform: scale(1); }
+    50%      { box-shadow: 0 0 16px rgba(255,60,60,.75); transform: scale(1.1); }
+  }
+
+  footer {
+    position: relative;
+    text-align: center;
+    padding: 1.6rem;
+    background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.3) 75%, transparent);
+    border-top: 1px solid rgba(220, 0, 0, .25);
+    font-size: .72rem;
+    letter-spacing: .22em;
+    color: #666;
+  }
+  footer .quote {
+    margin-top: .5rem;
+    font-style: italic;
+    letter-spacing: .14em;
+    color: #7a1a1a;
+    text-shadow: 0 0 10px rgba(220,0,0,.3);
+  }
+  footer .quote::before { content: "「 "; }
+  footer .quote::after  { content: " 」"; }
+
+  @media (max-width: 520px) {
+    .kanji, .slash { display: none; }
+    .logo { width: 92px; height: 92px; }
+    h1 { letter-spacing: .16em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="shade"></div>
+<div class="cursed"></div>
+
+<div class="embers">
+  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+</div>
+
+<div class="kanji l">領<br>域<br>展<br>開</div>
+<div class="kanji r">両<br>面<br>宿<br>儺</div>
+
+<div class="slash s1"></div>
+<div class="slash s2"></div>
+
+<header>
+  <div class="seal"><img src="logo.png" alt="Sukuna" class="logo" width="118" height="118"></div>
+  <h1>SUKUNA <span>HOST</span></h1>
+  <p class="tagline">Domain Expansion • PS4 Jailbreak</p>
+  <p class="curse">両面宿儺</p>
+</header>
+
+<div id="wrap">
+  <div class="panel">
+    <div id="state">Detectando...</div>
+    <div id="det"></div>
+    <div id="cache"></div>
+  </div>
+  <div class="gem"></div>
+  <p class="hint">Toque na tela ou pressione <span class="xbtn">✕</span> para continuar</p>
+</div>
+
+<footer>
+  SUKUNA HOST
+  <div class="quote">Know your place, fool.</div>
+</footer>
+
+<script>
+(function () {
+    var stateEl = document.getElementById("state");
+    var detEl = document.getElementById("det");
+    var cacheEl = document.getElementById("cache");
+    function setState(t, c) { stateEl.textContent = t; stateEl.className = c || ""; }
+    function setCache(t, ok) { cacheEl.textContent = t; cacheEl.className = ok ? "cacheok" : ""; }
+    var params = new URLSearchParams(location.search);
+
+    // Firmwares com tabela de kernel medida (igual ao raw13g)
+    // Mantenha sincronizado com ps4_offsets.js
+    var SUPPORTED = { 1302: 1, 1304: 1, 1350: 1, 1352: 1 };
+
+    var key = null, fwnum = null;
+    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+    if (m) {
+        var ms = parseInt(m[2], 16).toString(16);
+        if (ms.length < 2) ms = "0" + ms;
+        key = m[1] + "." + ms;
+        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+    }
+
+    var forced = params.get("force") === "1";
+    var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
+    detEl.innerHTML = "firmware <b>" + (key || "unknown") + "</b>"
+        + (supported ? " · <b>supported</b>"
+                     : " · not in this build's kernel table");
+
+    var target = "jb.html" + location.search;
+    function go() { setState("Invocando Domain Expansion...", "warn"); location.replace(target); }
+
+    function waitForTap(msg, action) {
+        setState(msg, "warn");
+        function fire() {
+            window.removeEventListener("click", fire);
+            window.removeEventListener("keydown", fire);
+            action();
+        }
+        window.addEventListener("click", fire);
+        window.addEventListener("keydown", fire);
+    }
+
+    if (!supported) {
+        setState("FIRMWARE NÃO SUPORTADO", "bad");
+        waitForTap("UNSUPPORTED (" + (key || "unknown") + ") — toque para tentar mesmo assim", go);
+        return;
+    }
+
+    var ac = window.applicationCache;
+    if (!ac || !document.documentElement.hasAttribute("manifest")) {
+        go();
+    } else if (!navigator.onLine) {
+        setCache("offline — usando cache", true);
+        go();
+    } else if (ac.status === ac.IDLE) {
+        setCache("cache pronto", true);
+        go();
+    } else if (ac.status === ac.UPDATEREADY) {
+        try { ac.swapCache(); } catch (e) {}
+        setCache("atualização baixada", true);
+        waitForTap("UPDATE READY — toque para recarregar e rodar",
+                   function () { location.reload(); });
+    } else {
+        setCache("verificando cache...");
+        ac.addEventListener("downloading",
+            function () { setCache("baixando cache (primeira vez)..."); }, false);
+        ac.addEventListener("progress", function (e) {
+            if (e && e.total)
+                setCache("cache " + Math.round((e.loaded / e.total) * 100) + "%");
+        }, false);
+        ac.addEventListener("cached", function () {
+            setCache("cache pronto para offline", true);
+            waitForTap("CACHED — toque para iniciar", go);
+        }, false);
+        ac.addEventListener("updateready", function () {
+            try { ac.swapCache(); } catch (e) {}
+            setCache("atualização baixada", true);
+            waitForTap("UPDATE READY — toque para recarregar e rodar",
+                       function () { location.reload(); });
+        }, false);
+        ac.addEventListener("noupdate", function () {
+            setCache("cache pronto — offline ok", true);
+            go();
+        }, false);
+        ac.addEventListener("error", function () {
+            setCache("cache indisponível");
+            waitForTap("CACHE FALHOU — toque para tentar mesmo assim", go);
+        }, false);
+        ac.addEventListener("obsolete", function () {
+            setCache("cache obsoleto");
+            waitForTap("CACHE OBSOLETO — toque para rodar", go);
+        }, false);
+    }
+})();
+</script>
+</body>
+</html>
